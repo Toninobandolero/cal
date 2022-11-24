@@ -4,10 +4,9 @@ import { getAppRegistry, getAppRegistryWithCredentials } from "@calcom/app-store
 import { getSession } from "@calcom/lib/auth";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import type { AppCategories } from "@calcom/prisma/client";
-import AllApps from "@calcom/ui/v2/core/apps/AllApps";
-import AppStoreCategories from "@calcom/ui/v2/core/apps/Categories";
-import TrendingAppsSlider from "@calcom/ui/v2/core/apps/TrendingAppsSlider";
-import AppsLayout from "@calcom/ui/v2/core/layouts/AppsLayout";
+import { AllApps, AppsLayout, AppStoreCategories, TrendingAppsSlider } from "@calcom/ui";
+
+import { ssgInit } from "@server/lib/ssg";
 
 export default function Apps({ appStore, categories }: InferGetStaticPropsType<typeof getServerSideProps>) {
   const { t } = useLocale();
@@ -22,6 +21,8 @@ export default function Apps({ appStore, categories }: InferGetStaticPropsType<t
 }
 
 export const getServerSideProps = async (context: NextPageContext) => {
+  const ssg = await ssgInit(context);
+
   const session = await getSession(context);
 
   let appStore;
@@ -42,6 +43,7 @@ export const getServerSideProps = async (context: NextPageContext) => {
   }, {} as Record<string, number>);
   return {
     props: {
+      trpcState: ssg.dehydrate(),
       categories: Object.entries(categories)
         .map(([name, count]): { name: AppCategories; count: number } => ({
           name: name as AppCategories,

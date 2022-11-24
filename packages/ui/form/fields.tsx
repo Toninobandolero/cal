@@ -5,9 +5,9 @@ import { FieldValues, FormProvider, SubmitHandler, useFormContext, UseFormReturn
 import classNames from "@calcom/lib/classNames";
 import { getErrorFromUnknown } from "@calcom/lib/errors";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
-import showToast from "@calcom/lib/notification";
 
 import { Alert } from "../Alert";
+import { showToast } from "../v2/core/notifications";
 
 type InputProps = Omit<JSX.IntrinsicElements["input"], "name"> & { name: string };
 

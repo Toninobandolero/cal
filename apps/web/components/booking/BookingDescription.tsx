@@ -3,7 +3,7 @@ import { FC, ReactNode } from "react";
 
 import { classNames } from "@calcom/lib";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
-import { Icon } from "@calcom/ui/Icon";
+import { Icon } from "@calcom/ui";
 
 import { UserAvatars } from "@components/booking/UserAvatars";
 import EventTypeDescriptionSafeHTML from "@components/eventtype/EventTypeDescriptionSafeHTML";
@@ -55,7 +55,7 @@ const BookingDescription: FC<Props> = (props) => {
       <h1 className="font-cal dark:text-darkgray-900 mb-6 break-words text-2xl font-semibold text-gray-900">
         {eventType.title}
       </h1>
-      <div className="dark:text-darkgray-600 flex flex-col space-y-3 text-sm font-medium text-gray-600">
+      <div className="dark:text-darkgray-600 flex flex-col space-y-4 text-sm font-medium text-gray-600">
         {eventType?.description && (
           <div
             className={classNames(
@@ -70,7 +70,9 @@ const BookingDescription: FC<Props> = (props) => {
                 )}
               />
             </div>
-            <EventTypeDescriptionSafeHTML eventType={eventType} />
+            <div className="max-w-[calc(100%_-_2rem)] flex-shrink break-words">
+              <EventTypeDescriptionSafeHTML eventType={eventType} />
+            </div>
           </div>
         )}
         {eventType?.requiresConfirmation && (
@@ -85,11 +87,9 @@ const BookingDescription: FC<Props> = (props) => {
             {t("requires_confirmation")}
           </div>
         )}
-        {!isBookingPage && !props.rescheduleUid ? (
-          <AvailableEventLocations
-            locations={eventType.locations as AvailabilityPageProps["eventType"]["locations"]}
-          />
-        ) : null}
+        <AvailableEventLocations
+          locations={eventType.locations as AvailabilityPageProps["eventType"]["locations"]}
+        />
         <p
           className={classNames(
             "text-sm font-medium",
